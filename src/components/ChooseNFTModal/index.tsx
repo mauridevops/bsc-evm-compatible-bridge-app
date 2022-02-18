@@ -84,7 +84,17 @@ const ChooseNFTModal: React.FC<ChooseNFTModalPropType> = ({
 
   const confirmToken721 = async () => {
     if (tokenId && contractAddress) {
-      const tokenUri = await contract721.getTokenUri(contractAddress, tokenId);
+      
+      var tokenUri = await contract721.getTokenUri(contractAddress, tokenId);
+
+      if (tokenUri.includes("https://ipfs.io/ipfs/")) {
+      //let moralisuri = NFT.token_uri;
+      let newuri = tokenUri.replace(
+        "https://ipfs.io/ipfs/",
+        "https://cloudflare-ipfs.com/ipfs/",
+      );
+      return (tokenUri = newuri);
+      }
       if (!tokenUri) return;
       const data = await api.getDataFromTokenUri(tokenUri);
       if (!data) {
